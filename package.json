@@ -1,4 +1,45 @@
 {
   "name": "md-links",
-  "version": "0.1.0"
+  "version": "0.1.0",
+  "description": "Desarrollo de una API para validar el estado de links en archivos markdow",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jest --verbose --coverage",
+    "lint": "eslint ./",
+    "lint:fix": "eslint ./ --fix",
+    "index": "nodemon src/index.js",
+    "md-links": "nodemon src/md-links.js",
+    "prueba": "nodemon prueba.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lorena-1204/LIM014-mdlinks.git"
+  },
+  "keywords": [
+    "Laboratoria",
+    "nodejs",
+    "javascript",
+    "md-links",
+    "CLI.",
+    "API"
+  ],
+  "author": "Lorena Ruiz <mlrc1204@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lorena-1204/LIM014-mdlinks/issues"
+  },
+  "homepage": "https://github.com/lorena-1204/LIM014-mdlinks#readme",
+  "devDependencies": {
+    "eslint": "^7.21.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "chalk": "^4.1.0",
+    "jest": "^26.6.3"
+  }
 }
