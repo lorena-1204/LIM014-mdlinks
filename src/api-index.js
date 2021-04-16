@@ -5,24 +5,27 @@ const path = require('path');
 const fs = require('fs');
 
 // Utiliza las solicitudes http (de forma asincrona)-solo peticiones a una API-rest,traer datos
-// const axios = require('axios');
+const axios = require('axios');
 
 // Rutas relativas y absolutas
 const dirRelative = 'pruebas';
-// const fileAbsolute = 'C:\\Users\\Lorena RC\\Desktop\\LIM014-mdlinks\\pruebas\\prueba.md';
+const relativa = 'pruebas\\folder2';
+const fileAbsolute = 'C:\\Users\\Lorena RC\\Desktop\\LIM014-mdlinks\\pruebas\\file-Absolute.md';
 
-// Verificar si la ruta existe
-const validateRoute = (route) => fs.existsSync(route);
-// console.log('existe', validateRoute(dirRelative));
-
-
-// Verificar si es un ruta es absoluta o relativa
+// Verificar si la ruta existe,
+const pathExists = (route) => fs.existsSync(route);
+// console.log('existe', pathExists(fileAbsolute));
 const pathAbsolute = (route) => path.resolve(route);
-// console.log('es una ruta absoluta', pathAbsolute(dirRelative));
+// normalizarla y convertirla a absoluta
+const ConvertAbsolutePath = (route) => (path.isAbsolute(route) ? route : path.resolve(route));
 
-// Convierte la ruta relativa a absoluta
-const seeISAbsolute = (route) => (path.isAbsolute(route) ? route : path.resolve(route));
-// console.log('es absoluta', seeISAbsolute(fileAbsolute));
+// const validateRoute = (route) => {
+//   if (fs.existsSync(route)) {
+//     return path.normalize(path.isAbsolute(route) ? route : path.resolve(route));
+//   }
+// };
+// console.log('existe', validateRoute(dirRelative));
+// console.log('es absoluta', validateRoute(fileAbsolute));
 
 // Comprobar si es un archivo
 const archive = (route) => fs.statSync(route).isFile();
@@ -40,8 +43,7 @@ const directory = (route) => fs.statSync(route).isDirectory();
 const readDirectory = (route) => fs.readdirSync(route);
 // console.log('lee directorio', readDirectory(dirRelative));
 
-// Identificar si tiene extensiones MD
-// extname -> obtiene la extension de una ruta de archivo
+// Identificar si tiene extensiones MD/ extname -> obtiene la extension de una ruta de archivo
 const markDown = (route) => (path.extname(route) === '.md');
 // console.log('tiene MD', markDown(fileAbsolute));
 
@@ -67,17 +69,20 @@ const getAllFiles = (route) => {
 
 // Se obtiene todos los enlaces de archivos md,devuelve in array de objeto
 const searchLinks = (route) => {
-  const arrayObj = [];
-  const absolutePath = seeISAbsolute(route);
+  const arrayLink = [];
+  const absolutePath = ConvertAbsolutePath(route);
   getAllFiles(absolutePath).forEach((file) => {
+    // g=> global(todas)/i=>Case insensitive(mayuscula y minusculas)
+    // .=> todas las coincidencias de cualquier caracter excepto nuevas linea
+    // * =>0 o Más /+ =>1 o Más/ ? => 0 o Uno
     const regExp = /\[(.*)\]\(((?!#).+)\)/gi;
     // match() => para obtener todas las ocurrencias de una expresión regular dentro de una cadena.
     // split() => divide un objeto de tipo String en un array.Especifica donde realizar cada corte.
-    // slice()=>devuelve una copia d una parte dl array dentro de uno nuevo empezando x inicio-fin.
+    // slice()=> extrae una array indicandole el indice incial y el final
     const links = readFile(file).match(regExp).map((e) => e.split('](')[1].slice(0, -1));
     const text = readFile(file).match(regExp).map((e) => e.split('](')[0].slice(1));
     links.forEach((link, i) => {
-      arrayObj.push({
+      arrayLink.push({
         href: link,
         text: text[i],
         file,
@@ -85,16 +90,37 @@ const searchLinks = (route) => {
     });
   });
 
-  return arrayObj;
+  return arrayLink;
 };
-console.log('array de objetos', searchLinks(dirRelative));
+// console.log('array de objetos', searchLinks(relativa));
+// console.log('array de objetos', searchLinks(dirRelative));
 
 // Peticion HTTP
+const validateLinks = (arrLiknsValidate) => {
+  const arr = arrLiknsValidate.map((obj) => (axios.get(obj.href))
+    .then((url) => {
+      if (url.status === 200) {
+        return {
+          ...obj,
+          status: url.status,
+          message: url.statusText,
+        };
+      }
+    })
+    .catch(() => ({
+      ...obj,
+      status: 404,
+      message: 'FAIL',
+    })));
+  return Promise.all(arr);
+};
+
+// validateLinks(searchLinks(fileAbsolute)).then((url) => console.log(url));
 
 module.exports = {
-  validateRoute,
+  pathExists,
   pathAbsolute,
-  seeISAbsolute,
+  ConvertAbsolutePath,
   archive,
   readFile,
   directory,
@@ -102,4 +128,5 @@ module.exports = {
   markDown,
   getAllFiles,
   searchLinks,
+  validateLinks,
 };
