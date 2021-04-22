@@ -15,9 +15,14 @@ const fileAbsolute = 'C:\\Users\\Lorena RC\\Desktop\\LIM014-mdlinks\\pruebas\\fi
 // Verificar si la ruta existe,
 const pathExists = (route) => fs.existsSync(route);
 // console.log('existe', pathExists(fileAbsolute));
+// console.log('existe', pathExists(dirRelative));
+
 const pathAbsolute = (route) => path.resolve(route);
+
 // normalizarla y convertirla a absoluta
 const ConvertAbsolutePath = (route) => (path.isAbsolute(route) ? route : path.resolve(route));
+// console.log('convert', ConvertAbsolutePath(dirRelative));
+// console.log('existe', ConvertAbsolutePath(fileAbsolute));
 
 // const validateRoute = (route) => {
 //   if (fs.existsSync(route)) {
@@ -29,7 +34,7 @@ const ConvertAbsolutePath = (route) => (path.isAbsolute(route) ? route : path.re
 
 // Comprobar si es un archivo
 const archive = (route) => fs.statSync(route).isFile();
-// console.log('es un archivo', archive(fileAbsolute));
+// console.log('es un archivo', archive(relativa));
 
 // leer contenido de un archivo
 const readFile = (route) => fs.readFileSync(route, { encoding: 'utf-8', flag: 'r' });
@@ -38,6 +43,7 @@ const readFile = (route) => fs.readFileSync(route, { encoding: 'utf-8', flag: 'r
 //  Comprobar si es un Directorio
 const directory = (route) => fs.statSync(route).isDirectory();
 // console.log('directory', directory(dirRelative));
+// console.log('existe', directory(fileAbsolute));
 
 // Leer un directorio
 const readDirectory = (route) => fs.readdirSync(route);
@@ -46,6 +52,7 @@ const readDirectory = (route) => fs.readdirSync(route);
 // Identificar si tiene extensiones MD/ extname -> obtiene la extension de una ruta de archivo
 const markDown = (route) => (path.extname(route) === '.md');
 // console.log('tiene MD', markDown(fileAbsolute));
+// console.log('tiene MD', markDown(dirRelative));
 
 // Obtener todos los archivos md. desde un archivo o directorio, retonando un array de rutas (path)
 const getAllFiles = (route) => {
