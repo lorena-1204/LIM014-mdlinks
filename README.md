@@ -1,7 +1,7 @@
 # Markdown Links
 Es una librería que permite leer y analizar archivos en formato markdown para verificar los links que contenga el archivo y poder validar su estado. 
 
-## 1. Doagrama de Flujo
+## 1. Diagrama de Flujo
 Para poder implementar esta librería, se realizaron 2 diagramas de flujo para cada módulo.
 
 ### API
