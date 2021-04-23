@@ -1,6 +1,6 @@
 {
   "name": "md-links-lrc",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Desarrollo de una API para validar el estado de links en archivos markdow",
   "main": "index.js",
   "directories": {
