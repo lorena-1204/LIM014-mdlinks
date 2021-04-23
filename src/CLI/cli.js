@@ -63,10 +63,3 @@ if (validate && stats) {
 `;
   console.log('WRONG COMAND TRY WITH --validate --stats', bear);
 }
-
-// (async () => {
-//   msn('MD-LINKS');
-//   createFile(await queryParams());
-// })();
-
-// md-links ./pruebas/file-Absolute.md --validate;
