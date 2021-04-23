@@ -7,52 +7,27 @@ const fs = require('fs');
 // Utiliza las solicitudes http (de forma asincrona)-solo peticiones a una API-rest,traer datos
 const axios = require('axios');
 
-// Rutas relativas y absolutas
-const dirRelative = 'pruebas';
-const relativa = 'pruebas\\folder2';
-const fileAbsolute = 'C:\\Users\\Lorena RC\\Desktop\\LIM014-mdlinks\\pruebas\\file-Absolute.md';
-
 // Verificar si la ruta existe,
 const pathExists = (route) => fs.existsSync(route);
-// console.log('existe', pathExists(fileAbsolute));
-// console.log('existe', pathExists(dirRelative));
 
 const pathAbsolute = (route) => path.resolve(route);
 
-// normalizarla y convertirla a absoluta
 const ConvertAbsolutePath = (route) => (path.isAbsolute(route) ? route : path.resolve(route));
-// console.log('convert', ConvertAbsolutePath(dirRelative));
-// console.log('existe', ConvertAbsolutePath(fileAbsolute));
-
-// const validateRoute = (route) => {
-//   if (fs.existsSync(route)) {
-//     return path.normalize(path.isAbsolute(route) ? route : path.resolve(route));
-//   }
-// };
-// console.log('existe', validateRoute(dirRelative));
-// console.log('es absoluta', validateRoute(fileAbsolute));
 
 // Comprobar si es un archivo
 const archive = (route) => fs.statSync(route).isFile();
-// console.log('es un archivo', archive(relativa));
 
 // leer contenido de un archivo
 const readFile = (route) => fs.readFileSync(route, { encoding: 'utf-8', flag: 'r' });
-// console.log('lee un archivo', readFile(fileAbsolute));
 
 //  Comprobar si es un Directorio
 const directory = (route) => fs.statSync(route).isDirectory();
-// console.log('directory', directory(dirRelative));
-// console.log('existe', directory(fileAbsolute));
 
 // Leer un directorio
 const readDirectory = (route) => fs.readdirSync(route);
-// console.log('lee directorio', readDirectory(dirRelative));
 
 // Identificar si tiene extensiones MD/ extname -> obtiene la extension de una ruta de archivo
 const markDown = (route) => (path.extname(route) === '.md');
-// console.log('tiene MD', markDown(fileAbsolute));
-// console.log('tiene MD', markDown(dirRelative));
 
 // Obtener todos los archivos md. desde un archivo o directorio, retonando un array de rutas (path)
 const getAllFiles = (route) => {
@@ -72,7 +47,6 @@ const getAllFiles = (route) => {
   const mdPath = arrayFile.filter((routa) => markDown(routa));
   return mdPath;
 };
-// console.log('obtener archivos', getAllFiles(dirRelative));
 
 // Se obtiene todos los enlaces de archivos md,devuelve in array de objeto
 const searchLinks = (route) => {
@@ -99,8 +73,6 @@ const searchLinks = (route) => {
 
   return arrayLink;
 };
-// console.log('array de objetos', searchLinks(relativa));
-// console.log('array de objetos', searchLinks(dirRelative));
 
 // Peticion HTTP
 const validateLinks = (arrLiknsValidate) => {
@@ -121,8 +93,6 @@ const validateLinks = (arrLiknsValidate) => {
     })));
   return Promise.all(arr);
 };
-
-// validateLinks(searchLinks(fileAbsolute)).then((url) => console.log(url));
 
 module.exports = {
   pathExists,

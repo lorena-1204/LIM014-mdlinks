@@ -1,5 +1,6 @@
 const { mdlinks } = require('../src/API/md-links');
 
+const linkFail = 'pruebas\\folder\\file-two.css';
 const archive = 'pruebas\\folder2\\archive.md';
 const relative = 'pruebas\\folder2';
 const link = [
@@ -9,15 +10,6 @@ const link = [
     file: `${process.cwd()}\\pruebas\\folder2\\archive.md`,
   },
 ];
-// const url = [
-//   {
-//     href: 'https://www.youtube.com',
-//     text: 'Youtube',
-//     file: `${process.cwd()}\\pruebas\\folder2\\archive.md`,
-//     status: 200,
-//     message: 'OK',
-//   },
-// ];
 
 describe('mdlinks', () => {
   it('should be a function', () => {
@@ -51,13 +43,15 @@ describe('mdlinks', () => {
         done();
       });
   });
+  it('return false resolve', () => {
+    expect(mdlinks(archive, { validate: false })).resolves.toEqual(link);
+  });
+  it('return false resolve', () => {
+    expect(mdlinks(archive, { validate: true })).resolves.toEqual(link);
+  });
+  it('return reject', () => {
+    mdlinks(linkFail, { validate: true }).catch((error) => {
+      expect(error.msj).toBe('does not exist');
+    });
+  });
 });
-//
-// it('should md-linkd {validate:true} ', (done) => {
-//   mdlinks(archive, { validate: true })
-//     .then((res) => {
-//       expect().toEqual(url);
-//       done();
-//     });
-// });
-//

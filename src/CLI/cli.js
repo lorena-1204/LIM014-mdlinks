@@ -69,4 +69,4 @@ if (validate && stats) {
 //   createFile(await queryParams());
 // })();
 
-// const a = './pruebas/file-Absolute.md --validate';
+// md-links ./pruebas/file-Absolute.md --validate;
